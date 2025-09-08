@@ -1,0 +1,17 @@
+.notifyMsg {
+    color: green;
+    background: lightgrey;
+    font-size: 40px;
+    border: 5px solid green;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.errorMsg {
+    color: red;
+    background: lightgrey;
+    font-size: 40px;
+    border: 5px solid red;
+    border-radius: 5px;
+    padding: 10px;
+}
