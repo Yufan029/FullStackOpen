@@ -1,17 +1,8 @@
+require('dotenv').config()
 const mongoose = require('mongoose')
 
-if (process.argv.length < 3) {
-    console.log('give password as argument')
-    process.exit(1)
-}
-
-const password = process.argv[2]
-
-const url = `mongodb+srv://zhangyufan029_db_user:${password}@cluster0.kccnim3.mongodb.net/noteApp?retryWrites=true&w=majority&appName=Cluster0`
-
 mongoose.set('strictQuery', false)
-
-mongoose.connect(url)
+mongoose.connect(process.env.MONGODB_URI)
 
 // schema concept are not in the database, document databases are schemaless,
 // mean doesn't care about the structure of data in database.

@@ -1,6 +1,9 @@
 http://localhost:3001/api/persons
 
 ###
+http://localhost:3001/api/persons/68bff52b6ef61f0e27793ede
+
+###
 POST http://localhost:3001/api/persons
 content-type: application/json
 
@@ -10,7 +13,7 @@ content-type: application/json
 }
 
 ###
-DELETE http://localhost:3001/api/persons/2
+DELETE http://localhost:3001/api/persons/68bff53eed37acf43083c2fc
 
 
 ###

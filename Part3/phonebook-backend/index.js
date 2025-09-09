@@ -1,5 +1,7 @@
+require('dotenv').config()
 const express = require('express')
 const morgan = require('morgan')
+const Person = require('./models/person')
 
 let persons = [
     { 
@@ -40,7 +42,9 @@ morgan.token('content', (req, res) => JSON.stringify(req.body))
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :content'))
 
 app.get('/api/persons', (request, response) => {
-    response.json(persons);
+    Person.find({}).then(persons => {
+        response.json(persons)
+    })
 })
 
 app.get('/info', (request, response) => {
@@ -51,20 +55,15 @@ app.get('/info', (request, response) => {
 })
 
 app.get('/api/persons/:id', (request, response) => {
-    const id = request.params.id
-    const person = persons.find(p => p.id === id)
-    console.log('person: ', person)
-    if (!person) {
-        return response.status(400).send('<p>No content</p>')
-    }
-    
-    response.send(`<div>Person with id: ${id}, 
-        name is: ${person.name}, number is: ${person.number}`);
+    Person.findById(request.params.id)
+        .then(person => {
+            console.log(person)
+            response.json(person)
+        })
+        .catch(error => {
+            response.status(400).json({ error: 'No content' })
+        })
 })
-
-const generateId = () => {
-    return Math.floor(Math.random() * 10000) + 5
-}
 
 app.post('/api/persons', (request, response) => {
     const {name, number} = request.body
@@ -73,32 +72,28 @@ app.post('/api/persons', (request, response) => {
         return response.status(400).json({error: 'Name and number need to provid'})
     }
 
-    const exist = persons.filter(p => p.name.toLowerCase() === name.toLowerCase())
-    if (exist.length !== 0) {
-        return response.status(400).json({error: 'Name must be unique'})
-    }
-
-    const person = {
-        id: String(generateId()),
-        name,
-        number,
-    }
-
-    persons = persons.concat(person)
-
-    response.json(person)
+    const person = new Person({ name, number })
+    person.save()
+        .then(person => {
+            response.json(person)
+        })
+        .catch(error => {
+            response.status(400).json({ error: 'Fail to create' })
+        })
 })
 
 app.delete('/api/persons/:id', (request, response) => {
-    const id = request.params.id;
-    const person = persons.find(p => p.id === id)
-
-    if (!person) {
-        return response.status(400).json({error: 'No content'})
-    }
-
-    persons = persons.filter(p => p.id !== id)
-    response.json(person);
+    Person.findByIdAndDelete(request.params.id)
+        .then(person => {
+            if (!person) {
+                response.status(400).json({ error: 'No content' })
+            } else {
+                response.json(person)   
+            }
+        })
+        .catch(error => {
+            response.status(400).json({ error: 'Fail to delete' })
+        })
 })
 
 const PORT = process.env.PORT || 3001
