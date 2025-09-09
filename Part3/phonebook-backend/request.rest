@@ -21,9 +21,9 @@ POST https://fullstackopen-phonebook-y1r2.onrender.com/api/persons/
 content-type: application/json
 
 {
-    "name": "foo1 bar",
+    "name": "foo bar",
     "number": "123-456"
 }
 
 ###
-DELETE https://fullstackopen-phonebook-y1r2.onrender.com/api/persons/2
+DELETE https://fullstackopen-phonebook-y1r2.onrender.com/api/persons/6060

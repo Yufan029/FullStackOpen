@@ -28,6 +28,14 @@ const app = express()
 //app.use(morgan('tiny'))
 app.use(express.json())
 
+// This server will provide the static files from this directory,
+// when browser access root directory, the dist/index.html will be served which is the frontend client
+// then the index.html will send the request from browser to server to request the js and css file,
+// the server will serve the static files(js, css files) from the dist directory,
+// then the js send back to client(browser), it will trigger the retrieve data via js script, 
+// get into the /api/person address to grab the data.
+app.use(express.static('dist'))
+
 morgan.token('content', (req, res) => JSON.stringify(req.body))
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :content'))
 
