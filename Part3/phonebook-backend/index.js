@@ -98,7 +98,7 @@ app.delete('/api/persons/:id', (request, response) => {
     }
 
     persons = persons.filter(p => p.id !== id)
-    response.redirect('/')
+    response.json(person);
 })
 
 const PORT = process.env.PORT || 3001
