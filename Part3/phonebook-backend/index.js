@@ -93,7 +93,7 @@ app.delete('/api/persons/:id', (request, response) => {
     response.send('<p>delete success</p>')
 })
 
-const PORT = 3001
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
     console.log(`Server start at prot ${PORT}`)
 })
