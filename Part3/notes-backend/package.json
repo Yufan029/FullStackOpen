@@ -1,5 +1,5 @@
 {
-  "name": "backend",
+  "name": "notes-backend",
   "version": "1.0.0",
   "description": "",
   "license": "ISC",
@@ -10,7 +10,7 @@
     "start": "node index.js",
     "dev": "node --watch index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build:ui": "rm -rf dist && cd ../../Part2/Practice && npm run build && cp -r dist ../../Part3/backend",
+    "build:ui": "rm -rf dist && cd ../../Part2/Practice && npm run build && cp -r dist ../../Part3/notes-backend",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push"
   },
   "dependencies": {
