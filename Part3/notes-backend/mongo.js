@@ -8,8 +8,8 @@ mongoose.connect(process.env.MONGODB_URI)
 // mean doesn't care about the structure of data in database.
 // This schema is only application level - define the shape of the collection in document database.
 const noteSchema = new mongoose.Schema({
-    content: String,
-    important: Boolean,
+  content: String,
+  important: Boolean,
 })
 
 // and create the matching model, like the factory object to create new note
@@ -31,8 +31,8 @@ const Note = mongoose.model('Note', noteSchema)
 
 
 Note.find({}).then(result => {
-    result.forEach(note => {
-        console.log(note)
-    })
-    mongoose.connection.close()
+  result.forEach(note => {
+    console.log(note)
+  })
+  mongoose.connection.close()
 })

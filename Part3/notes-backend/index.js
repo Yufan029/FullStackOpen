@@ -18,13 +18,13 @@ const requestLogger = (request, response, next) => {
 app.use(requestLogger)
 
 app.get('/', (request, response) => {
-    response.send('<h1>Hello World!</h1>')
+  response.send('<h1>Hello World!</h1>')
 })
 
 app.get('/api/notes', (request, response) => {
-    Note.find({}).then(notes => {
-      response.json(notes)
-    })
+  Note.find({}).then(notes => {
+    response.json(notes)
+  })
 })
 
 app.get('/api/notes/:id', (request, response, next) => {
@@ -40,20 +40,20 @@ app.get('/api/notes/:id', (request, response, next) => {
 })
 
 app.post('/api/notes', (request, response, next) => {
-    const { content, important } = request.body
+  const { content, important } = request.body
 
-    if (!content) {
-        return response.status(400).json({ error: 'content missing' })
-    }
+  if (!content) {
+    return response.status(400).json({ error: 'content missing' })
+  }
 
-    const note = new Note({
-      content: content,
-      important: important || false,
-    })
+  const note = new Note({
+    content: content,
+    important: important || false,
+  })
 
-    note.save().then(savedNote => {
-      response.json(savedNote)
-    })
+  note.save().then(savedNote => {
+    response.json(savedNote)
+  })
     .catch(error => next(error))
 })
 
@@ -76,12 +76,12 @@ app.put('/api/notes/:id', (request, response, next) => {
 })
 
 app.delete('/api/notes/:id', (request, response, next) => {
-    Note
-      .findByIdAndDelete(request.params.id)
-      .then(result => {
-        response.status(204).end()
-      })
-      .catch(error => next(error))
+  Note
+    .findByIdAndDelete(request.params.id)
+    .then(() => {
+      response.status(204).end()
+    })
+    .catch(error => next(error))
 })
 
 const unknownEndpoint = (request, response) => {
@@ -106,5 +106,5 @@ app.use(errorHandler)
 
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`)
+  console.log(`Server running on port ${PORT}`)
 })

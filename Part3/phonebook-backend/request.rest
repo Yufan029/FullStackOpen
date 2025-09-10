@@ -35,7 +35,7 @@ DELETE http://localhost:3001/api/persons/68c0284b6f847c5953e8bae9
 https://fullstackopen-phonebook-y1r2.onrender.com/api/persons/
 
 ###
-https://fullstackopen-phonebook-y1r2.onrender.com/api/info/
+https://fullstackopen-phonebook-y1r2.onrender.com/info/
 
 ###
 POST https://fullstackopen-phonebook-y1r2.onrender.com/api/persons/
