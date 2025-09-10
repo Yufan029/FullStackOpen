@@ -28,8 +28,14 @@ Content-Type: application/json
 DELETE http://localhost:3001/api/persons/68c0284b6f847c5953e8bae9
 
 
+
+
+
 ###
 https://fullstackopen-phonebook-y1r2.onrender.com/api/persons/
+
+###
+https://fullstackopen-phonebook-y1r2.onrender.com/api/info/
 
 ###
 POST https://fullstackopen-phonebook-y1r2.onrender.com/api/persons/
@@ -37,8 +43,8 @@ content-type: application/json
 
 {
     "name": "foo bar",
-    "number": "123-456"
+    "number": "123-456789"
 }
 
 ###
-DELETE https://fullstackopen-phonebook-y1r2.onrender.com/api/persons/6060
+DELETE https://fullstackopen-phonebook-y1r2.onrender.com/api/persons/68c0c2620bcba275b65ed08d
