@@ -19,7 +19,7 @@ const App = () => {
       .getAll()
       .then(persons => setPersons(persons))
       .catch(error => {
-        alert(error)
+        console.log(error)
       })
   }, [])
 
@@ -53,9 +53,12 @@ const App = () => {
             setPersons(persons.map(person => person.id === exist.id ? returnedPerson : person))
           })
           .catch(error => {
-            console.log(error)
-            setErrorFlagWithTimeout()
-            notifyWithTimeout(`Information of ${exist.name} has already been removed from server`)
+            // server side return validation error message
+            if (error.response.data.error) {
+              errorWithTimeout(error.response.data.error)
+            } else {
+              errorWithTimeout(`Information of ${exist.name} has already been removed from server`)
+            }
 
             // refresh list
             personService.getAll().then(persons => setPersons(persons))
@@ -73,7 +76,7 @@ const App = () => {
       name: newName,
       number: phoneNumber,
     }
-
+    
     personService
       .create(newPerson)
       .then(returnedPerson => {
@@ -81,10 +84,10 @@ const App = () => {
         setNewName('')
         setPhoneNumber('')
         notifyWithTimeout(`Added ${returnedPerson.name}`)
-        console.log(persons)
       })
       .catch(error => {
-        alert(error)
+        console.log(error.response.data.error)
+        errorWithTimeout(error.response.data.error)
       })
   }
 
@@ -93,6 +96,11 @@ const App = () => {
     setTimeout(() => {
       setNotificationMsg(null)
     }, 3000)
+  }
+
+  const errorWithTimeout = (message) => {
+    setErrorFlagWithTimeout()
+    notifyWithTimeout(message)
   }
 
   const setErrorFlagWithTimeout = () => {
@@ -117,8 +125,7 @@ const App = () => {
       })
       .catch(error => {
         console.log(error.message)
-        setErrorFlagWithTimeout()
-        notifyWithTimeout(`Information of ${name} has already been removed from server`)
+        errorWithTimeout(`Information of ${name} has already been removed from server`)
 
         // reset persons to refresh list
         personService.getAll().then(persons => setPersons(persons))
