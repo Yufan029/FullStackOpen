@@ -9,9 +9,10 @@ content-type: application/json
 ###
 POST http://localhost:3001/api/notes
 content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1sdXVra2FpIiwiaWQiOiI2OGMyOWE4YjJhMWNmZDJhOTIwYWYwNjQiLCJpYXQiOjE3NTc1ODQ4ODF9.rfHXPkhJliO1L2SGjIJf38veKwmKA0xpDYCZoAQ_rf0
 
 {
-    "content": "rest client test",
-    "important": true,
-    "userId": "68c26b62de01412861928e1e"
+    "content": "jwt authentication",
+    "important": true
 }
+
