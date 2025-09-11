@@ -1,8 +1,8 @@
-require('dotenv').config()
+const config = require('./utils/config')
 const mongoose = require('mongoose')
 
 mongoose.set('strictQuery', false)
-mongoose.connect(process.env.MONGODB_URI)
+mongoose.connect(config.MONGODB_URI)
 
 // schema concept are not in the database, document databases are schemaless,
 // mean doesn't care about the structure of data in database.
@@ -19,20 +19,20 @@ const Note = mongoose.model('Note', noteSchema)
 
 // so the note has all the functionality inherit from model Note (prototype inherit)
 // and can use the method provided by the contructor model(Note), like save() below
-// const note = new Note({
-//     content: 'CSS is hard',
-//     important: true,
-// })
+const note = new Note({
+  content: 'HTML is easy',
+  important: true,
+})
 
-// note.save().then(result => {
-//     console.log('note saved!')
-//     mongoose.connection.close()
-// })
-
-
-Note.find({}).then(result => {
-  result.forEach(note => {
-    console.log(note)
-  })
+note.save().then(() => {
+  console.log('note saved!')
   mongoose.connection.close()
 })
+
+
+// Note.find({}).then(result => {
+//   result.forEach(note => {
+//     console.log(note)
+//   })
+//   mongoose.connection.close()
+// })
