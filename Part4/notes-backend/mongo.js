@@ -24,11 +24,18 @@ const note = new Note({
   important: true,
 })
 
-note.save().then(() => {
-  console.log('note saved!')
-  mongoose.connection.close()
-})
+// note.save().then(() => {
+//   console.log('note saved!')
+//   mongoose.connection.close()
+// })
 
+const saveNote = async (note) => {
+  await note.save()
+  console.log('note saved')
+  await mongoose.connection.close()
+}
+
+saveNote(note)
 
 // Note.find({}).then(result => {
 //   result.forEach(note => {

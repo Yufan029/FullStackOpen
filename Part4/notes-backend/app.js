@@ -9,15 +9,18 @@ const loginRouter = require('./controllers/login')
 
 const app = express()
 
-logger.info('connecting to MongoDB')
-mongoose
-  .connect(config.MONGODB_URI)
-  .then(() => {
+const connectDB = async () => {
+  try {
+    logger.info('connecting to MongoDB')
+    await mongoose.connect(config.MONGODB_URI)
     logger.info('connected to MongoDB')
-  })
-  .catch(error => {
+  } catch (error) {
     logger.error('error connection to MongoDB', error.message)
-  })
+    process.exit(1)
+  }
+}
+
+connectDB()
 
 app.use(express.static('dist'))
 app.use(express.json())
