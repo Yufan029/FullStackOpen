@@ -1,0 +1,1 @@
+1. after, beforeEach, etc. in supertest shouldn't have a describe title, otherwise the mongoose db connection cannot be closed and the command-line just hanging there.
