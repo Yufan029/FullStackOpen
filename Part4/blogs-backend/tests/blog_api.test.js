@@ -78,7 +78,55 @@ describe('blog api tests', () => {
       .expect(400)
   })
 
-  after(async () => {
-    await mongoose.connection.close()
+  describe('update test', () => {
+    test('update with valid id', async () => {
+      const blogsInDb = await helper.blogsInDb()
+      const firstBlog = blogsInDb[0]
+      const updateBlogContent = {
+        title: 'the first one',
+        author: 'me',
+        url: 'http://no',
+        likes: 3333
+      }
+
+      const expectResult = {
+        ...updateBlogContent,
+        id: firstBlog.id
+      }
+
+      const response = await api
+        .put(`/api/blogs/${firstBlog.id}`)
+        .send(updateBlogContent)
+        .expect(200)
+        .expect('Content-Type', /application\/json/)
+
+      assert.deepStrictEqual(response.body, expectResult)
+    })
   })
+
+  describe('deletion test', () => {
+    test('delete valid blog', async () => {
+      const blogs = await helper.blogsInDb()
+      const deletedBlog = blogs[0]
+      log(deletedBlog)
+      await api.delete(`/api/blogs/${deletedBlog.id}`).expect(204)
+
+      const blogsAfterDeletion = await helper.blogsInDb()
+      assert.strictEqual(blogsAfterDeletion.length, testData.blogs.length - 1)
+    })
+
+    test('deletion non-existing id', async () => {
+      const id = await helper.nonExistId()
+      log('------------------->', id)
+      await api.delete(`/api/blogs/${id}`).expect(204)
+    })
+
+    test('deletion of invalid id', async () => {
+      await api.delete('/api/blogs/888').expect(400)
+    })
+  })
+})
+
+after(async () => {
+  await mongoose.connection.close()
 })
