@@ -5,6 +5,7 @@ const supertest = require('supertest')
 const app = require('../app')
 const Note = require('../models/note')
 const helper = require('./test_helper')
+const { log } = require('node:console')
 
 // superagent
 const api = supertest(app)
@@ -64,9 +65,13 @@ describe('when there is initially some notes saved', () => {
 
   describe('addition of a new note', () => {
     test('succeeds with a valid data', async () => {
+      const usersInDb = await helper.usersInDb()
+      log('first user in db--------------------->', usersInDb[0])
+
       const newNote = {
         content: 'async/await simplifies making async calls',
         important: true,
+        userId: usersInDb[0].id
       }
 
       await api

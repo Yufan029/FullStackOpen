@@ -12,5 +12,6 @@ content-type: application/json
 
 {
     "content": "rest client test",
-    "important": true
+    "important": true,
+    "userId": "68c26b62de01412861928e1e"
 }

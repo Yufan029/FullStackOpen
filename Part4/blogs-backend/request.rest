@@ -10,3 +10,15 @@ Content-Type: application/json
   "url": "http://www.interesting.com2",
   "likes": 2
 }
+
+
+###
+PUT http://localhost:3001/api/blogs/68c109333ba080ec
+Content-Type: application/json
+
+{
+  "title": "bTTTTbbbbb",
+  "author": "me2333333",
+  "url": "http://www333333",
+  "likes": 2332
+}
