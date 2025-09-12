@@ -1,0 +1,31 @@
+http://localhost:3001/api/blogs
+
+###
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJuYW1lIiwiaWQiOiI2OGMzNTcwOTA2Yjk0MTdhOTZlOGM0M2IiLCJpYXQiOjE3NTc2NDE3NDUsImV4cCI6MTc1NzY0NTM0NX0.JktwJzmljBNVu1rwOEqwPd-Dw5G2RzLLyMwk9GKzUQs
+
+{
+  "title": "request middleware",
+  "author": "kk",
+  "url": "http://www.interesting.com444",
+  "likes": 4323,
+  "userId": "68c3570906b9417a96e8c43b"
+}
+
+
+###
+PUT http://localhost:3001/api/blogs/68c109333ba080ec
+Content-Type: application/json
+
+{
+  "title": "bTTTTbbbbb",
+  "author": "me2333333",
+  "url": "http://www333333",
+  "likes": 2332,
+}
+
+###
+delete http://localhost:3001/api/blogs/68c37dfe4e62b9dfb89e2f23
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJuYW1lIiwiaWQiOiI2OGMzNTcwOTA2Yjk0MTdhOTZlOGM0M2IiLCJpYXQiOjE3NTc2NDE3NDUsImV4cCI6MTc1NzY0NTM0NX0.JktwJzmljBNVu1rwOEqwPd-Dw5G2RzLLyMwk9GKzUQs
+

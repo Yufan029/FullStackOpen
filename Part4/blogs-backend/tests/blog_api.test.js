@@ -1,4 +1,4 @@
-const { describe, test, after, beforeEach } = require('node:test')
+const { describe, test, after, beforeEach, before } = require('node:test')
 const assert = require('node:assert')
 const supertest = require('supertest')
 const mongoose = require('mongoose')
@@ -42,40 +42,68 @@ describe('blog api tests', () => {
     assert(Object.hasOwn(firstBlog, 'id'))
   })
 
-  test('post one, length increase, content exists in db', async () => {
-    await api
-      .post('/api/blogs')
-      .send(testData.oneNormalBlog)
-      .expect(201)
-      .expect('Content-type', /application\/json/)
+  describe('blog post api tests', () => {
+    let token = null
 
-    const blogs = await helper.blogsInDb()
-    assert.strictEqual(blogs.length, testData.blogs.length + 1)
+    before(async () => {
+      const response = await api
+        .post('/api/login')
+        .send({
+          username: 'username',
+          password: '1234'
+        })
 
-    const titles = blogs.map(blog => blog.title)
-    assert(titles.includes('Go To Statement Considered Harmful'))
-  })
+      log('blog post response =================>', response.body)
+      token = response.body.token
+    })
 
-  test('post missing like blog', async () => {
-    const response = await api
-      .post('/api/blogs')
-      .send(testData.blogMissingLikeProperty)
+    test('post one, length increase, content exists in db', async () => {
+      console.log('***************', token)
+      await api
+        .post('/api/blogs')
+        .set('Authorization', `Bearer ${token}`)
+        .send(testData.oneNormalBlog)
+        .expect(201)
+        .expect('Content-type', /application\/json/)
 
-    assert.strictEqual(response.body.likes, 0)
-  })
+      const blogs = await helper.blogsInDb()
+      assert.strictEqual(blogs.length, testData.blogs.length + 1)
 
-  test('post blog without title, status 400 received', async () => {
-    await api
-      .post('/api/blogs')
-      .send(testData.blogWithoutTitle)
-      .expect(400)
-  })
+      const titles = blogs.map(blog => blog.title)
+      assert(titles.includes('Go To Statement Considered Harmful'))
+    })
 
-  test('post blog without url, status 400 received', async () => {
-    await api
-      .post('/api/blogs')
-      .send(testData.blogWithoutUrl)
-      .expect(400)
+    test('post missing like blog', async () => {
+      const response = await api
+        .post('/api/blogs')
+        .set('Authorization', `Bearer ${token}`)
+        .send(testData.blogMissingLikeProperty)
+
+      assert.strictEqual(response.body.likes, 0)
+    })
+
+    test('post blog without title, status 400 received', async () => {
+      await api
+        .post('/api/blogs')
+        .set('Authorization', `Bearer ${token}`)
+        .send(testData.blogWithoutTitle)
+        .expect(400)
+    })
+
+    test('post blog without url, status 400 received', async () => {
+      await api
+        .post('/api/blogs')
+        .set('Authorization', `Bearer ${token}`)
+        .send(testData.blogWithoutUrl)
+        .expect(400)
+    })
+
+    test('post blog no token, 401 received', async () => {
+      await api
+        .post('/api/blogs')
+        .send(testData.oneNormalBlog)
+        .expect(401)
+    })
   })
 
   describe('update test', () => {
@@ -105,11 +133,27 @@ describe('blog api tests', () => {
   })
 
   describe('deletion test', () => {
+    let token = null
+
+    before(async () => {
+      const response = await api
+        .post('/api/login')
+        .send({
+          username: 'username',
+          password: '1234'
+        })
+
+      token = response.body.token
+    })
+
     test('delete valid blog', async () => {
       const blogs = await helper.blogsInDb()
       const deletedBlog = blogs[0]
-      log(deletedBlog)
-      await api.delete(`/api/blogs/${deletedBlog.id}`).expect(204)
+      log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@', deletedBlog)
+      await api
+        .delete(`/api/blogs/${deletedBlog.id}`)
+        .set('Authorization', `Bearer ${token}`)
+        .expect(204)
 
       const blogsAfterDeletion = await helper.blogsInDb()
       assert.strictEqual(blogsAfterDeletion.length, testData.blogs.length - 1)
@@ -117,12 +161,17 @@ describe('blog api tests', () => {
 
     test('deletion non-existing id', async () => {
       const id = await helper.nonExistId()
-      log('------------------->', id)
-      await api.delete(`/api/blogs/${id}`).expect(204)
+      await api
+        .delete(`/api/blogs/${id}`)
+        .set('Authorization', `Bearer ${token}`)
+        .expect(204)
     })
 
     test('deletion of invalid id', async () => {
-      await api.delete('/api/blogs/888').expect(400)
+      await api
+        .delete('/api/blogs/888')
+        .set('Authorization', `Bearer ${token}`)
+        .expect(400)
     })
   })
 })

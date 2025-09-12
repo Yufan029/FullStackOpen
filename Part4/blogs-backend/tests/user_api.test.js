@@ -73,7 +73,7 @@ describe('users api test', () => {
       .expect(400)
 
     log('response.body ===> ', response.body)
-    assert.strictEqual(response.body.error, 'Bad request - Validation error')
+    assert.strictEqual(response.body.error, 'User validation failed: username: Path `username` (`te`, length 2) is shorter than the minimum allowed length (3).')
   })
 
   test('add user fail, username should be unique', async () => {
