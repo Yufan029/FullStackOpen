@@ -20,7 +20,7 @@ function App() {
       const notes = await noteService.getAll()
       setNotes(notes)
     }
-    
+
     fetchNotes()
   }, [])
 
@@ -108,11 +108,11 @@ function App() {
         </button>
       </div>
       <ul>
-        {notesToShow.map(note => 
+        {notesToShow.map(note =>
           <Note
             key={note.id}
             note={note}
-            toggleImportance={() => toggleImportanceOf(note.id)} 
+            toggleImportance={() => toggleImportanceOf(note.id)}
           />
         )}
       </ul>
