@@ -39,7 +39,7 @@ const Blog = ({ blog, updateBlog, deleteBlog, loginUser }) => {
     <div>
       <div style={blogStyle}>
         <div>
-          {blog.title}
+          {blog.title} {blog.author}
           <button onClick={toggleVisible}>{visible ? 'hide' : 'view'}</button>
         </div>
         <div style={{ display: visible ? '' : 'none' }}>
@@ -48,7 +48,7 @@ const Blog = ({ blog, updateBlog, deleteBlog, loginUser }) => {
             likes {blog.likes}
             <button onClick={increaseLike}>like</button>
           </div>
-          <div>{blog.author}</div>
+          <div>{blog.user.name}</div>
           <button style={buttonStyle} onClick={() => deleteBlog(blog)}>remove</button>
         </div>
       </div>
