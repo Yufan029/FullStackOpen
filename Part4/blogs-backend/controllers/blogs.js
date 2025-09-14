@@ -14,6 +14,8 @@ blogsRouter.post('/', userExtractor, async (request, response) => {
   }
 
   console.log('request.token ================================>', request.token)
+
+  // request user is assigned in the userExtractor middleware
   const user = request.user
 
   const newBlog = new Blog({ title, author, url, likes, user: user._id })
@@ -28,7 +30,6 @@ blogsRouter.post('/', userExtractor, async (request, response) => {
 
 blogsRouter.put('/:id', async (request, response) => {
   const { title, author, url, likes } = request.body
-
   const blogForUpdate = await Blog.findById(request.params.id)
 
   if (!blogForUpdate) {
@@ -41,12 +42,12 @@ blogsRouter.put('/:id', async (request, response) => {
   blogForUpdate.likes = likes
 
   const result = await blogForUpdate.save()
+  console.log(result)
   response.status(200).json(result)
 })
 
 blogsRouter.delete('/:id', userExtractor, async (request, response) => {
   const blog = await Blog.findById(request.params.id)
-  console.log('bloggggggggggggggggggggggggg', blog)
   if (!blog) {
     return response.status(400).json({ error: 'Invalid blog id' })
   }

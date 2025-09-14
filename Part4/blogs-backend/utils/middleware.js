@@ -47,7 +47,6 @@ const userExtractor = async (request, response, next) => {
 
   if (auth && auth.startsWith('Bearer ')) {
     const { id } = jwt.verify(auth.replace('Bearer ', ''), process.env.SECRET)
-
     if (!id) {
       return response.status(401).json({ error: 'Token invalid' })
     }
