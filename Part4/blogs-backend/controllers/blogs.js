@@ -31,7 +31,8 @@ blogsRouter.post('/', userExtractor, async (request, response) => {
 blogsRouter.put('/:id', async (request, response) => {
   const { title, author, url, likes } = request.body
   const blogForUpdate = await Blog.findById(request.params.id)
-
+  console.log(request.params.id)
+console.log(blogForUpdate)
   if (!blogForUpdate) {
     response.status(400).end()
   }

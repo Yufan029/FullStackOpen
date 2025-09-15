@@ -2,7 +2,6 @@ import { useState } from 'react'
 
 const Blog = ({ blog, updateBlog, deleteBlog, loginUser }) => {
   const [visible, setVisible] = useState(false)
-
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -37,7 +36,7 @@ const Blog = ({ blog, updateBlog, deleteBlog, loginUser }) => {
 
   return (
     <div>
-      <div style={blogStyle}>
+      <div style={blogStyle} data-testid='blog-item'>
         <div>
           {blog.title} {blog.author}
           <button onClick={toggleVisible}>{visible ? 'hide' : 'view'}</button>
