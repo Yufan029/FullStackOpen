@@ -97,7 +97,7 @@ function App() {
       {!user && loginForm()}
       {user && (
         <div>
-          <p>{user.name} logged</p>
+          <p>{user.name} logged in</p>
           {noteForm()}
         </div>
       )}

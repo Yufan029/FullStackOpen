@@ -14,7 +14,7 @@
     "build:ui": "rm -rf dist && cd ../../Part2/Practice && npm run build && cp -r dist ../../Part4/notes-backend",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push",
     "lint": "eslint .",
-    "fix": "eslint . --fix"
+    "start:test": "cross-env NODE_ENV=test node --watch index.js"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
