@@ -19,11 +19,13 @@ const Anecdote = ({ anecdote, handleClick }) => {
 // container component
 const AnecdoteList = () => {
   const dispatch = useDispatch()
-  const anecdotes = useSelector(state => state)
+  const anecdotes = useSelector(({ anecdotes, filter }) => {
+    return anecdotes.filter(anecdote => anecdote.content.includes(filter))
+  })
 
   return (
     <div>
-      {anecdotes.sort((a, b) => b.votes - a.votes).map(anecdote =>
+      {anecdotes && anecdotes.sort((a, b) => b.votes - a.votes).map(anecdote =>
         <Anecdote 
           key={anecdote.id} 
           anecdote={anecdote} 
