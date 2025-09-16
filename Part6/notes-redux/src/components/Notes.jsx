@@ -10,7 +10,7 @@ const Note = ({ note, handleClick }) => {
   )
 }
 
-// container component
+// container component - define the event handler for presentational component
 const Notes = () => {
   const dispatch = useDispatch()
   const notes = useSelector(state => state)
