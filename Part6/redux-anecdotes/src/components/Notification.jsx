@@ -2,7 +2,6 @@ import { useSelector } from "react-redux"
 
 const Notification = () => {
   const notificationMessage = useSelector(state => {
-    console.log('↓↓↓↓↓↓↓↓↓↓↓↓↓*** state ***↓↓↓↓↓↓↓↓↓↓↓↓↓↓', state)
     return state.notify
   })
 
