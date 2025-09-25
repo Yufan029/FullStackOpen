@@ -2,6 +2,12 @@ import React, { useState, useEffect } from 'react'
 import './index.css'
 import axios from 'axios'
 
+import PromisePolyfill from 'promise-polyfill'
+
+if (!window.Promise) {
+  window.Promise = PromisePolyfill
+}
+
 const useNotes = (url) => {
   const [notes, setNotes] = useState([])
   useEffect(() => {

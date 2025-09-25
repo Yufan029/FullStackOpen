@@ -1,0 +1,17 @@
+.error {
+  background-color: rgb(182, 181, 181);
+  border: 5px red solid;
+  color: red;
+  padding: 20px;
+  font-size: xx-large;
+  border-radius: 10px;
+}
+
+.notify {
+  background-color: rgb(182, 181, 181);
+  border: 5px green solid;
+  color: green;
+  padding: 20px;
+  font-size: xx-large;
+  border-radius: 10px;
+}
