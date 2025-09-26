@@ -4,17 +4,17 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import LoginForm from './components/LoginForm'
 import CreateForm from './components/CreateForm'
-import Error from './components/Error'
 import NotifyMessage from './components/NotifyMessage'
 import './App.css'
 import Togglable from './components/Togglable'
+import { useDispatch } from 'react-redux'
+import { setNotificationWithTimeout } from './reducers/notificationReducer'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [errorMessage, setErrorMessage] = useState(null)
-  const [notifyMessage, setNotifyMessage] = useState(null)
   const [user, setUser] = useState(null)
   const toggleRef = useRef()
+  const dispatch = useDispatch()
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -38,20 +38,21 @@ const App = () => {
     try {
       toggleRef.current.toggleVisibility()
       const createdBlog = await blogService.create({ title, author, url })
-      setNotifyMessage(
-        `a new blog ${createdBlog.title} by ${createdBlog.author} added`
+      dispatch(
+        setNotificationWithTimeout({
+          message: `a new blog ${createdBlog.title} by ${createdBlog.author} added`,
+        })
       )
-      setTimeout(() => {
-        setNotifyMessage(null)
-      }, 5000)
 
       const blogs = await blogService.getAll()
       setBlogs(blogs)
     } catch {
-      setErrorMessage('create fail')
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
+      dispatch(
+        setNotificationWithTimeout({
+          error: true,
+          message: 'create fail',
+        })
+      )
     }
   }
 
@@ -61,10 +62,9 @@ const App = () => {
       console.log(updatedBlog)
       setBlogs(await blogService.getAll())
     } catch (error) {
-      setErrorMessage(error.message)
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
+      dispatch(
+        setNotificationWithTimeout({ error: true, message: error.message })
+      )
     }
   }
 
@@ -78,10 +78,9 @@ const App = () => {
       console.log(result)
       setBlogs(await blogService.getAll())
     } catch (error) {
-      setErrorMessage(error.message)
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
+      dispatch(
+        setNotificationWithTimeout({ error: true, message: error.message })
+      )
     }
   }
 
@@ -92,10 +91,12 @@ const App = () => {
       blogService.setToken(user.token)
       setUser(user)
     } catch {
-      setErrorMessage('wrong credentials')
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
+      dispatch(
+        setNotificationWithTimeout({
+          error: true,
+          message: 'wrong credentials',
+        })
+      )
     }
   }
 
@@ -104,7 +105,7 @@ const App = () => {
     setUser(null)
   }
 
-  const createForm = () => {
+  const CreateFormWithToggle = () => {
     return (
       <Togglable buttonLabel='create new blog' ref={toggleRef}>
         <CreateForm handleCreate={handleCreate} />
@@ -114,9 +115,7 @@ const App = () => {
 
   return (
     <>
-      <Error message={errorMessage} />
-      <NotifyMessage message={notifyMessage} />
-
+      <NotifyMessage />
       {!user && <LoginForm handleLogin={handleLogin} />}
       {user && (
         <div>
@@ -125,7 +124,7 @@ const App = () => {
             {user.name} logged in
             <button onClick={handleLogout}>log out</button>
           </p>
-          {createForm()}
+          <CreateFormWithToggle />
           {blogs
             .sort((a, b) => b.likes - a.likes)
             .map((blog) => (
