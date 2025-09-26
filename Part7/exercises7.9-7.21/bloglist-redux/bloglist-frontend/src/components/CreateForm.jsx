@@ -1,15 +1,17 @@
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { createNewBlog } from '../reducers/blogReducer'
 
-const CreateForm = ({ handleCreate }) => {
+const CreateForm = ({ toggleRef }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
+  const dispatch = useDispatch()
 
   const handleSubmit = (event) => {
     event.preventDefault()
-
-    handleCreate(title, author, url)
-
+    toggleRef.current.toggleVisibility()
+    dispatch(createNewBlog(title, author, url))
     setTitle('')
     setAuthor('')
     setUrl('')
@@ -21,22 +23,34 @@ const CreateForm = ({ handleCreate }) => {
         <div>
           <label>
             title:
-            <input type="text" value={title} onChange={({ target }) => setTitle(target.value)} />
+            <input
+              type='text'
+              value={title}
+              onChange={({ target }) => setTitle(target.value)}
+            />
           </label>
         </div>
         <div>
           <label>
             author:
-            <input type="text" value={author} onChange={({ target }) => setAuthor(target.value)} />
+            <input
+              type='text'
+              value={author}
+              onChange={({ target }) => setAuthor(target.value)}
+            />
           </label>
         </div>
         <div>
           <label>
             url:
-            <input type="text" value={url} onChange={({ target }) => setUrl(target.value)} />
+            <input
+              type='text'
+              value={url}
+              onChange={({ target }) => setUrl(target.value)}
+            />
           </label>
         </div>
-        <button type="submit">Create</button>
+        <button type='submit'>Create</button>
       </form>
     </div>
   )

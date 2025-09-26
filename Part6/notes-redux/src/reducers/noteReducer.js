@@ -1,4 +1,4 @@
-import { createSlice, current } from "@reduxjs/toolkit"
+import { createSlice, current } from '@reduxjs/toolkit'
 import noteService from '../services/notes'
 
 // const initialState = [
@@ -24,35 +24,36 @@ const noteSlice = createSlice({
   reducers: {
     toggleImportanceOf(state, action) {
       const id = action.payload
-      const noteToChange = state.find(n => n.id === id)
+      const noteToChange = state.find((n) => n.id === id)
       const changedNote = {
         ...noteToChange,
-        important: !noteToChange.important
+        important: !noteToChange.important,
       }
 
       console.log(current(state))
-      return state.map(note => note.id === id ? changedNote : note)
+      return state.map((note) => (note.id === id ? changedNote : note))
     },
     appendNote(state, action) {
+      // since it uses immr to change the state directly, no need to return
       state.push(action.payload)
     },
     setNotes(state, action) {
       return action.payload
-    }
-  }
+    },
+  },
 })
 
 export const { toggleImportanceOf, appendNote, setNotes } = noteSlice.actions
 
 export const initializeNotes = () => {
-  return async dispatch => {
+  return async (dispatch) => {
     const notes = await noteService.getAll()
     dispatch(setNotes(notes))
   }
 }
 
-export const createNote = content => {
-  return async dispatch => {
+export const createNote = (content) => {
+  return async (dispatch) => {
     const newNote = await noteService.createNew(content)
     dispatch(appendNote(newNote))
   }
@@ -79,7 +80,6 @@ export default noteSlice.reducer
 //       return state
 //   }
 // }
-
 
 // export const createNote = (content) => {
 //   return {

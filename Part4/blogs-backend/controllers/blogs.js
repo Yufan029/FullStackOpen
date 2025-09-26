@@ -10,7 +10,9 @@ blogsRouter.get('/', async (request, response) => {
 blogsRouter.post('/', userExtractor, async (request, response) => {
   const { title, author, url, likes } = request.body
   if (!title || !author || !url) {
-    return response.status(400).json({ error: 'title, author or url cannot be empty' })
+    return response
+      .status(400)
+      .json({ error: 'title, author or url cannot be empty' })
   }
 
   console.log('request.token ================================>', request.token)
@@ -25,14 +27,18 @@ blogsRouter.post('/', userExtractor, async (request, response) => {
   user.blogs = user.blogs.concat(savedBlog._id)
   await user.save()
 
-  response.status(201).json(savedBlog)
+  const returnedBlog = await Blog.findById(savedBlog.id).populate('user', {
+    username: 1,
+    name: 1,
+  })
+
+  response.status(201).json(returnedBlog)
 })
 
 blogsRouter.put('/:id', async (request, response) => {
   const { title, author, url, likes } = request.body
   const blogForUpdate = await Blog.findById(request.params.id)
   console.log(request.params.id)
-console.log(blogForUpdate)
   if (!blogForUpdate) {
     response.status(400).end()
   }
