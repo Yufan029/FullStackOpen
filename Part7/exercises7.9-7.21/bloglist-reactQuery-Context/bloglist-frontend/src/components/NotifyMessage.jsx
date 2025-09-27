@@ -1,10 +1,17 @@
-const NotifyMessage = ({ message }) => {
-  if (message === null) {
+import { useNotification } from '../helper'
+
+const NotifyMessage = () => {
+  const notification = useNotification()
+  console.log(notification)
+
+  if (notification.message === null) {
     return
   }
 
   return (
-    <div className="notify">{message}</div>
+    <div className={notification.error ? 'error' : 'notify'}>
+      {notification.message}
+    </div>
   )
 }
 
