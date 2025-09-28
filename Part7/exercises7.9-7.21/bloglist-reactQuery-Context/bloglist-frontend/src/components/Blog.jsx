@@ -1,23 +1,29 @@
 import { useState } from 'react'
+import { useUpdateMutation, useDeleteMutatoin } from '../query'
+import { useUser } from '../helper'
 
-const Blog = ({ blog, updateBlog, deleteBlog, loginUser }) => {
+const Blog = ({ blog }) => {
   const [visible, setVisible] = useState(false)
+  const updateMutation = useUpdateMutation()
+  const deleteMutation = useDeleteMutatoin()
+  const loginUser = useUser()
+
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
     border: 'solid',
     borderWidth: 1,
-    marginBottom:5
+    marginBottom: 5,
   }
 
   const buttonStyle = {
     display: loginUser.username === blog.user.username ? '' : 'none',
     backgroundColor: 'blue',
     color: 'white',
-    borderRadius: 5
+    borderRadius: 5,
   }
 
-  const toggleVisible =  () => {
+  const toggleVisible = () => {
     setVisible(!visible)
   }
 
@@ -28,10 +34,18 @@ const Blog = ({ blog, updateBlog, deleteBlog, loginUser }) => {
       likes: blog.likes + 1,
       author: blog.author,
       title: blog.title,
-      url: blog.url
+      url: blog.url,
     }
 
-    updateBlog(updatedBlog)
+    updateMutation.mutate(updatedBlog)
+  }
+
+  const handleDelete = (blog) => {
+    if (!window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
+      return
+    }
+
+    deleteMutation.mutate(blog)
   }
 
   return (
@@ -48,7 +62,9 @@ const Blog = ({ blog, updateBlog, deleteBlog, loginUser }) => {
             <button onClick={increaseLike}>like</button>
           </div>
           <div>{blog.user.name}</div>
-          <button style={buttonStyle} onClick={() => deleteBlog(blog)}>remove</button>
+          <button style={buttonStyle} onClick={() => handleDelete(blog)}>
+            remove
+          </button>
         </div>
       </div>
     </div>
