@@ -1,9 +1,12 @@
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
 const { userExtractor } = require('../utils/middleware')
+const Comment = require('../models/comment')
 
 blogsRouter.get('/', async (request, response) => {
-  const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
+  const blogs = await Blog.find({})
+    .populate('user', { username: 1, name: 1 })
+    .populate('comments', { content: 1 })
   response.json(blogs)
 })
 
@@ -20,7 +23,14 @@ blogsRouter.post('/', userExtractor, async (request, response) => {
   // request user is assigned in the userExtractor middleware
   const user = request.user
 
-  const newBlog = new Blog({ title, author, url, likes, user: user._id })
+  const newBlog = new Blog({
+    title,
+    author,
+    url,
+    likes,
+    user: user._id,
+    comments: [],
+  })
   const savedBlog = await newBlog.save()
 
   // also save the blog id to the associated user
@@ -62,6 +72,10 @@ blogsRouter.delete('/:id', userExtractor, async (request, response) => {
   if (blog.user.toString() !== request.user._id.toString()) {
     return response.status(401).json({ error: 'Unauthorized user' })
   }
+
+  const comments = await Comment.find({ blog: blog._id })
+  console.log('dddddddddddddddddddddddd', comments)
+  await Comment.deleteMany({ blog: blog._id })
 
   await blog.deleteOne()
   response.status(204).end()

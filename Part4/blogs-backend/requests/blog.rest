@@ -3,12 +3,12 @@ http://localhost:3001/api/blogs
 ###
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJuYW1lIiwiaWQiOiI2OGMzOWNkZmIyOTVhYzQ1NGIzZjMxNmYiLCJpYXQiOjE3NTc5MTE3MTAsImV4cCI6MTc1NzkxNTMxMH0.y3-ziJsxD2PGr7R57DxZpIUvMgq0FCaD4EGO35ODArs
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Inl1ZmFuIiwiaWQiOiI2OGMzZTIzOWMxNTdlOTQ2OTIxZDlmNzkiLCJpYXQiOjE3NTkxMTc4NTUsImV4cCI6MTc1OTEyMTQ1NX0.nt198wXA5Rftq686Uf4aLyQ8wMH6T112LZe09RXDmbY
 
 {
-  "title": "TDD harms architecture",
-  "author": "Robert C. Martin",
-  "url": "http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html",
+  "title": "New blog for comments",
+  "author": "Robert C",
+  "url": "http://blog.comments.com/",
   "likes": 0
 }
 
@@ -28,3 +28,13 @@ Content-Type: application/json
 delete http://localhost:3001/api/blogs/68c798b2cd66fdfa377d33fa
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ill1ZmFuIiwiaWQiOiI2OGM3OTY3NzRkNWQ1OWZiNmY0ZjA0ZWMiLCJpYXQiOjE3NTc5MTA4NDcsImV4cCI6MTc1NzkxNDQ0N30.Sax-cb-pbclmDRPktYR4ulakTFMKjfr-Jr6MAnoSzi4
 
+###
+get http://localhost:3001/api/blogs/68d68dca4ea9b665b554b991/comments
+
+###
+post http://localhost:3001/api/blogs/68d68dca4ea9b665b554b991/comments
+Content-Type: application/json
+
+{
+  "content": "new comments 3"
+}
