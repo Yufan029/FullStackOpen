@@ -6,7 +6,7 @@ const CreateFormWithToggle = () => {
   const toggleRef = useRef()
 
   return (
-    <Togglable buttonLabel='create new blog' ref={toggleRef}>
+    <Togglable buttonLabel='new blog' ref={toggleRef}>
       <CreateForm toggleRef={toggleRef} />
     </Togglable>
   )

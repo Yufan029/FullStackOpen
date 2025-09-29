@@ -12,6 +12,7 @@ import usersService from './services/users'
 import UserInfo from './components/UserInfo'
 import Menu from './components/Menu'
 import BlogInfo from './components/BlogInfo'
+import { Box, Typography } from '@mui/material'
 
 const App = () => {
   const [allUsers, setAllUsers] = useState()
@@ -50,10 +51,18 @@ const App = () => {
       : null
 
   return (
-    <>
+    <Box
+      sx={{
+        marginTop: '2rem',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
       <NotifyMessage />
+      <Typography variant='h2'>Blog app</Typography>
       {loginUser && <Menu />}
-      <h2>blog app</h2>
       {loginUser ? (
         <Routes>
           <Route path='/' element={<Blogs />} />
@@ -65,7 +74,7 @@ const App = () => {
       ) : (
         <LoginForm />
       )}
-    </>
+    </Box>
   )
 }
 

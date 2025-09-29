@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { createNewBlog } from '../reducers/blogReducer'
+import { Box, TextField, Button, Typography } from '@mui/material'
 
 const CreateForm = ({ toggleRef }) => {
   const [title, setTitle] = useState('')
@@ -16,42 +17,38 @@ const CreateForm = ({ toggleRef }) => {
     setAuthor('')
     setUrl('')
   }
+
   return (
     <div>
-      <h2>Create new</h2>
-      <form onSubmit={handleSubmit}>
+      <Typography variant='h5'>Create new</Typography>
+      <Box
+        component='form'
+        sx={{ '& .MuiTextField-root': { m: 1, width: '25ch' } }}
+        autoComplete='off'
+        onSubmit={handleSubmit}
+      >
         <div>
-          <label>
-            title:
-            <input
-              type='text'
-              value={title}
-              onChange={({ target }) => setTitle(target.value)}
-            />
-          </label>
+          <TextField
+            label='title'
+            variant='outlined'
+            value={title}
+            onChange={({ target }) => setTitle(target.value)}
+          />
+          <TextField
+            label='author'
+            value={author}
+            onChange={({ target }) => setAuthor(target.value)}
+          />
+          <TextField
+            label='url'
+            value={url}
+            onChange={({ target }) => setUrl(target.value)}
+          />
         </div>
-        <div>
-          <label>
-            author:
-            <input
-              type='text'
-              value={author}
-              onChange={({ target }) => setAuthor(target.value)}
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            url:
-            <input
-              type='text'
-              value={url}
-              onChange={({ target }) => setUrl(target.value)}
-            />
-          </label>
-        </div>
-        <button type='submit'>Create</button>
-      </form>
+        <Button type='submit' variant='contained' color='primary' size='small'>
+          Create
+        </Button>
+      </Box>
     </div>
   )
 }
