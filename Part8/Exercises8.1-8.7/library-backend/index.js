@@ -176,6 +176,7 @@ const resolvers = {
         authors = authors.concat(newAuthor)
       }
 
+      console.log(args)
       const newBook = { ...args, id: uuid() }
       books = books.concat(newBook)
 
