@@ -9,7 +9,9 @@
     "lint": "eslint .",
     "fix": "eslint . --fix",
     "test": "cross-env NODE_ENV=test node --test",
-    "start:test": "cross-env NODE_ENV=test node --watch index.js"
+    "start:test": "cross-env NODE_ENV=test node --watch index.js",
+    "build:ui": "rm -rf dist && cd ../../Part7/exercises7.9-7.21/bloglist-redux/bloglist-frontend && npm run build && cp -r dist ../../../../Part4/blogs-backend",
+    "deploy:full": "npm run build:ui && git add . && git commit -m blog-fullstack-deploy && git push"
   },
   "keywords": [],
   "author": "",
