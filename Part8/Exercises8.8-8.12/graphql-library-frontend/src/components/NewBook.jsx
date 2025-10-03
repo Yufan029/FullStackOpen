@@ -16,6 +16,20 @@ const NewBook = ({ setNotifyMessage }) => {
       console.log(messages)
       setNotifyMessage(messages)
     },
+    update: (cache, response) => {
+      const existing = cache.readQuery({ query: ALL_BOOKS })
+      console.log('existing cache', existing)
+
+      console.log('addBook query response.data:', response.data)
+      cache.updateQuery(
+        { query: ALL_BOOKS, variables: { genre: null } },
+        ({ allBooks }) => {
+          return {
+            allBooks: allBooks.concat(response.data.addBook),
+          }
+        }
+      )
+    },
   })
 
   const submit = async (event) => {

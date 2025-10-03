@@ -9,7 +9,7 @@ const Notify = ({ message }) => {
         color: 'red',
         border: '5px solid red',
         padding: 5,
-        maxWidth: '20vw',
+        maxWidth: '400px',
       }}
     >
       {message}

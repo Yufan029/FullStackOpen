@@ -7,6 +7,9 @@ const AuthorUpdate = ({ authors, setNotifyMessage }) => {
 
   const [updateAuthor, result] = useMutation(UPDATE_AUTHOR, {
     refetchQueries: [{ query: ALL_AUTHORS }],
+    onError: (error) => {
+      setNotifyMessage(error.errors[0].message)
+    },
   })
 
   useEffect(() => {

@@ -1,35 +1,29 @@
 import { useQuery } from '@apollo/client/react'
 import { ALL_BOOKS } from '../queries'
+import GenreFilters from './GenreFilters'
+import { useState } from 'react'
+import BooksTable from './BooksTable'
 
 const Books = () => {
-  const result = useQuery(ALL_BOOKS)
+  const [filter, setFilter] = useState(null)
+  const result = useQuery(ALL_BOOKS, {
+    variables: {
+      genre: filter,
+    },
+  })
 
   if (result.loading) {
     return <div>Loading...</div>
   }
 
-  const books = result.data.allBooks
+  console.log(result.error)
+  let books = result.data.allBooks
 
   return (
     <div>
       <h2>books</h2>
-
-      <table>
-        <tbody>
-          <tr>
-            <th></th>
-            <th>author</th>
-            <th>published</th>
-          </tr>
-          {books.map((a) => (
-            <tr key={a.title}>
-              <td>{a.title}</td>
-              <td>{a.author}</td>
-              <td>{a.published}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <BooksTable books={books} />
+      <GenreFilters setFilter={setFilter} />
     </div>
   )
 }

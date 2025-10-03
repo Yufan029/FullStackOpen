@@ -9,22 +9,42 @@ const PersonForm = ({ setError }) => {
   const [city, setCity] = useState('')
 
   const [createPerson] = useMutation(CREATE_PERSON, {
-    refetchQueries: [{ query: ALL_PERSONS }],
+    // since we have the update call back to update the cache manually, there's no need to refetch everytime
+    // refetchQueries: [{ query: ALL_PERSONS }],
     onError: (error) => {
       const messages = error.errors.map((e) => e.message).join('\n')
+      const extensionErrMsg = error.errors
+        .map((e) => e.extensions.error.message)
+        .join('\n')
       console.log(Object.keys(error))
       console.log('errors:', error.errors)
       console.log('data:', error.data)
       console.log('extensions:', error.extensions)
       console.log('name:', error.name)
-      setError(messages)
+      console.log([messages, extensionErrMsg].join('\n'))
+      setError([messages, extensionErrMsg].join('\n'))
+    },
+    update: (cache, response) => {
+      cache.updateQuery({ query: ALL_PERSONS }, ({ allPersons }) => {
+        console.log('createPerson update, response data', response.data)
+        return {
+          allPersons: allPersons.concat(response.data.addPerson),
+        }
+      })
     },
   })
 
   const submit = (event) => {
     event.preventDefault()
 
-    createPerson({ variables: { name, phone, street, city } })
+    createPerson({
+      variables: {
+        name,
+        street,
+        city,
+        phone: phone.length > 0 ? phone : undefined,
+      },
+    })
 
     setName('')
     setPhone('')

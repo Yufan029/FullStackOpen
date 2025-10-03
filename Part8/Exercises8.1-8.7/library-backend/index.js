@@ -31,6 +31,7 @@ const typeDefs = `
   
   type Token {
     value: String!
+    user: User!
   }
   
   type Author {
@@ -91,6 +92,7 @@ const resolvers = {
 
     allBooks: async (root, args) => {
       let result = await Book.find({}).populate('author')
+      console.log(result)
       if (args.author) {
         result = result.filter((book) => book.author.name === args.author)
       }
@@ -159,7 +161,7 @@ const resolvers = {
         })
       }
 
-      const author = await Author.findOne({ name: args.author })
+      let author = await Author.findOne({ name: args.author })
       console.log('author found:', author)
 
       if (!author) {
@@ -168,6 +170,7 @@ const resolvers = {
           author = await newAuthor.save()
           console.log('new author:', newAuthor)
         } catch (error) {
+          console.log(error)
           throw new GraphQLError('Add user failed when adding new book', {
             extensions: {
               code: 'BAD_USER_INPUT',
@@ -180,7 +183,7 @@ const resolvers = {
 
       const newBook = new Book({
         ...args,
-        author: author.id,
+        author: author._id,
       })
 
       try {
@@ -273,8 +276,13 @@ const resolvers = {
         })
       }
 
-      const signToken = { username: user.username, id: user._id }
-      return { value: jwt.sign(signToken, process.env.JWT_SECRET) }
+      const payload = { username: user.username, id: user._id }
+      const token = jwt.sign(payload, process.env.JWT_SECRET)
+
+      return {
+        value: token,
+        user: user,
+      }
     },
   },
 }

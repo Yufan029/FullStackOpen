@@ -7,11 +7,22 @@ const PhoneForm = ({ setError }) => {
   const [name, setName] = useState('')
   const [phone, setPhone] = useState('')
 
-  const [changeNumber, result] = useMutation(EDIT_NUMBER)
+  const [changeNumber, result] = useMutation(EDIT_NUMBER, {
+    onError: (error) => {
+      console.log(Object.keys(error))
+      console.log(error.errors[0].extensions.error.message)
+      const messages = error.errors.map((e) => e.message).join('\n')
+      const extensionMsg = error.errors
+        .map((e) => e.extensions.error.message)
+        .join('\n')
+      const errorMsg = [messages, extensionMsg].join('\n')
+      console.log(errorMsg)
+      setError(errorMsg)
+    },
+  })
 
   const submit = (event) => {
     event.preventDefault()
-
     changeNumber({ variables: { name, phone } })
 
     setName('')
@@ -20,7 +31,7 @@ const PhoneForm = ({ setError }) => {
 
   useEffect(() => {
     console.log(Object.keys(result))
-    console.log(result.data)
+    console.log(result)
     if (result.data && result.data.editNumber === null) {
       setError('person not found')
     }

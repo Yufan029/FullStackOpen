@@ -137,15 +137,18 @@ const resolvers = {
 
     editNumber: async (root, args) => {
       const person = await Person.findOne({ name: args.name })
-      person.phone = args.phone
+      if (!person) {
+        return null
+      }
 
+      person.phone = args.phone
       try {
         await person.save()
       } catch (error) {
         throw new GraphQLError('Saving number failed', {
           extensions: {
             code: 'BAD_USER_INPUT',
-            invalidArgs: arags.name,
+            invalidArgs: args.phone,
             error,
           },
         })
