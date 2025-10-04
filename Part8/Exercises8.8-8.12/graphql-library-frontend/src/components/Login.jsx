@@ -1,14 +1,17 @@
 import { useState, useEffect } from 'react'
-import { useMutation } from '@apollo/client/react'
-import { LOGIN } from '../queries'
+import { useMutation, useApolloClient } from '@apollo/client/react'
+import { CURRENT_USER, LOGIN } from '../queries'
 import { useNavigate } from 'react-router-dom'
 
-const Login = ({ setToken, setUser, setNotifyMessage }) => {
+const Login = ({ setToken, setNotifyMessage }) => {
   const [name, setName] = useState('')
   const [password, setPassword] = useState('')
   const Navigate = useNavigate()
+  const client = useApolloClient()
 
   const [login, result] = useMutation(LOGIN, {
+    refetchQueries: [{ query: CURRENT_USER }],
+    awaitRefetchQueries: true,
     onError: (error) => {
       console.log(Object.keys(error))
       console.log(error.errors[0].message)
@@ -19,15 +22,10 @@ const Login = ({ setToken, setUser, setNotifyMessage }) => {
   useEffect(() => {
     if (result.data) {
       const token = result.data.login.value
-      console.log('token --> ', result.data)
+      console.log('token --> ', result.data.login.value)
       localStorage.setItem('library-token', token)
-      localStorage.setItem(
-        'library-user',
-        JSON.stringify(result.data.login.user)
-      )
+      client.resetStore()
       setToken(token)
-      setUser(result.data.login.user)
-
       setName('')
       setPassword('')
       Navigate('/')

@@ -31,7 +31,6 @@ const typeDefs = `
   
   type Token {
     value: String!
-    user: User!
   }
   
   type Author {
@@ -120,6 +119,8 @@ const resolvers = {
 
       return returned
     },
+
+    me: (root, args, context) => context.currentUser,
   },
 
   Mutation: {
@@ -277,12 +278,7 @@ const resolvers = {
       }
 
       const payload = { username: user.username, id: user._id }
-      const token = jwt.sign(payload, process.env.JWT_SECRET)
-
-      return {
-        value: token,
-        user: user,
-      }
+      return { value: jwt.sign(payload, process.env.JWT_SECRET) }
     },
   },
 }

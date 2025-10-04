@@ -71,11 +71,16 @@ export const LOGIN = gql`
   mutation login($name: String!, $password: String!) {
     login(username: $name, password: $password) {
       value
-      user {
-        username
-        favoriteGenre
-        id
-      }
+    }
+  }
+`
+
+export const CURRENT_USER = gql`
+  query currentUser {
+    me {
+      username
+      favoriteGenre
+      id
     }
   }
 `
